@@ -2,6 +2,8 @@
 ## Eclipse
 #################
 
+*.jpg
+*.png
 *.pydevproject
 .project
 .metadata
