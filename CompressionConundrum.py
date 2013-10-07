@@ -4,6 +4,7 @@ import os
 import copy
 import multiprocessing
 import time
+import sys
 
 class CompressionConundrum():
 	def __init__(self):
@@ -87,11 +88,10 @@ def runFolder(cc, folder):
 	samples = os.listdir(folder)
 	s = 0
 	while s < len(samples):
-		if samples[s].split(".")[-1] not in []:
+		if samples[s].split(".")[-1] not in ["jpg","jpeg","png","tiff"]:
 			print "Unknown extension for '%s', skipping." % samples[s]
-			continue
-			
-		if len(multiprocessing.active_children()) < multiprocessing.cpu_count()-1:
+			s+=1
+		elif len(multiprocessing.active_children()) < multiprocessing.cpu_count()-1:
 			print "Starting new Process."
 			p = multiprocessing.Process(target=createImageOverview, args=(cc,samples[s]))
 			p.start()
@@ -125,9 +125,9 @@ def createImageOverview(cc, image):
 	# Allow for different sizes
 	nTestSettings = []		
 	for t in testSettings:
-		nTestSettings.append((	copy.deepcopy(t).setScale(3), 
-								copy.deepcopy(t).setScale(2), 
-								copy.deepcopy(t).setScale(1.5),			
+		nTestSettings.append((	#copy.deepcopy(t).setScale(3), 
+								#copy.deepcopy(t).setScale(2), 
+								#copy.deepcopy(t).setScale(1.5),			
 								t,
 								copy.deepcopy(t).setScale(0.66),
 								copy.deepcopy(t).setScale(0.5),
@@ -201,9 +201,9 @@ def createImageOverview(cc, image):
 		
 if __name__ == "__main__":
 	cc = CompressionConundrum()
-	if "samples" in sys.argv[1:]:
+	if "demo" in sys.argv[1:]:
 		runFolder(cc, "samples")
-	elif len(sys.argv) > 0:
+	elif len(sys.argv) > 1:
 		path = sys.argv[1]
 		if not os.path.exists(path):
 			print "This file could not be found."
