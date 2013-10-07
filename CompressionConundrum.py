@@ -83,10 +83,14 @@ class CCSettings():
 		return
 	
 # Sample image run
-def sampleImageRun(cc):	
-	samples = os.listdir("samples")
+def runFolder(cc, folder):	
+	samples = os.listdir(folder)
 	s = 0
-	while s < len(samples):		
+	while s < len(samples):
+		if samples[s].split(".")[-1] not in []:
+			print "Unknown extension for '%s', skipping." % samples[s]
+			continue
+			
 		if len(multiprocessing.active_children()) < multiprocessing.cpu_count()-1:
 			print "Starting new Process."
 			p = multiprocessing.Process(target=createImageOverview, args=(cc,samples[s]))
@@ -197,5 +201,21 @@ def createImageOverview(cc, image):
 		
 if __name__ == "__main__":
 	cc = CompressionConundrum()
-	sampleImageRun(cc)
+	if "samples" in sys.argv[1:]:
+		runFolder(cc, "samples")
+	elif len(sys.argv) > 0:
+		path = sys.argv[1]
+		if not os.path.exists(path):
+			print "This file could not be found."
+			sys.exit()
+		
+		if os.path.isfile(path):
+			createImageOverview(cc, path )
+		elif os.path.isdir(path):
+			runFolder(cc,path)
+	else:
+		print "Welcome to CompressionConundrum."
+		print "Run this program with 'demo' as an argument to start plowing through the images in the 'samples' folder."
+		print "Run this program with a filename as an argument to generate an overview for that image."
+		print "Run this program with a folder as an argument to generate an overview for all the images in that folder."
 	
