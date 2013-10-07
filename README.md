@@ -1,6 +1,6 @@
 CompressionConundrum
 ====================
-(Comparing one of Windows' Default wallpapers)[http://i44.tinypic.com/2nbdlkj.png]
+![Comparing one of Windows' Default wallpapers](http://i44.tinypic.com/2nbdlkj.png)
 
 CompressionConundrum is a Python script that allows you to produce
 a large amount of images in different compressions, so that you can find the
