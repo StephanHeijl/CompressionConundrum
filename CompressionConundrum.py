@@ -79,6 +79,11 @@ class CCSettings():
 			self.height = int(self.height * scale)
 			self.scale = scale
 		return self
+		
+	def setSize(self, w, h):
+		self.width = w
+		self.height = h
+		return self
 	
 	def __int__(self):
 		return
@@ -115,24 +120,25 @@ def createImageOverview(cc, image):
 	
 	testSettings = []
 	
-	for q in range(1,101,5):
+	for q in range(0,101,20):
 		testSettings.append( CCSettings(	width=original.size[0], 
 											height=original.size[1],
 											format="JPEG",
 											scale=1,
-											quality=q	) )
+											quality=q+1 ) )
 	
 	# Allow for different sizes
-	nTestSettings = []		
+	nTestSettings = []
 	for t in testSettings:
-		nTestSettings.append((	#copy.deepcopy(t).setScale(3), 
-								#copy.deepcopy(t).setScale(2), 
-								#copy.deepcopy(t).setScale(1.5),			
+		nTestSettings.append((	copy.deepcopy(t).setScale(3), 
+								copy.deepcopy(t).setScale(2), 
+								copy.deepcopy(t).setScale(1.5),			
 								t,
-								copy.deepcopy(t).setScale(0.66),
+								#copy.deepcopy(t).setScale(0.75),
 								copy.deepcopy(t).setScale(0.5),
-								copy.deepcopy(t).setScale(0.33),
-								copy.deepcopy(t).setScale(0.25)))
+								#copy.deepcopy(t).setScale(0.33),
+								#copy.deepcopy(t).setScale(0.25)
+							))
 	
 	smallest = min( [t.scale for t in nTestSettings[0]] )
 	
@@ -182,7 +188,7 @@ def createImageOverview(cc, image):
 				
 			
 			# Draw text with shadow
-			text = "%sx%s R:%s Q:%s S:%skb D:%.2f%% V:%.2f" % (s.width, s.height, ratio, s.quality, fileSize/1024, d , d / (fileSize/1024))
+			text = "%sx%s R:%.2f Q:%s S:%skb D:%.2f%% V:%.2f" % (s.width, s.height, ratio, s.quality, fileSize/1024, d , d / (fileSize/1024))
 			print text
 			scaledDraw.text( (6,6), text, (0,0,0), font=font)
 			scaledDraw.text( (5,5), text, (255,255,255), font=font )
